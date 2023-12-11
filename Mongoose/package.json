@@ -9,6 +9,7 @@
   "author": "Saumya Mongoose",
   "license": "ISC",
   "dependencies": {
+    "module": "^1.2.5",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.2"
   }
