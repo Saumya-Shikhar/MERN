@@ -8,7 +8,7 @@ const middleware = (req,res,next) => {
         res.send(`Welcome ${req.query.name}`);         
     }
     else{
-    next();
+        next();
     }
 }
 // app.use(middleware);

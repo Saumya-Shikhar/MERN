@@ -1,23 +1,49 @@
-const mongoose = require('mongoose');
-const db_url = 'mongodb://0.0.0.0:27017/Custom';
+const mongoose = require('mongoose')
 
-const Saved_file = async () => {
-    await mongoose.connect(db_url);
-    const result_Schema = await mongoose.Schema({
-        brand: String,
-        name: Number,
-        price: Number
-    });
-} 
+mongoose.connect("mongodb://0.0.0.0:27017/Custom");
+const productSch = mongoose.Schema(
+    {
+        brand:String,
+        name:String,
+        price:Number,
+        color:String
+    }
+);
 
-const update_file = async () => {
-    const product = mongoose.model('product',result_Schema);
-    let data = await mongoose.updateOne(
-        {brand:"samsung"},
+const CreateDB = async () => {
+    const productmodel = new mongoose.model('products',productSch);
+    let data = new productmodel(
         {
-            $set:{color:"Pearl blue"}
-        }
-    )
-    console.log(data);
+            brand:'Nokia',
+            name:"Nokia 110",
+            price:1700,
+            color:"Blue"
+        });
+    const result = await data.save();
+    console.log(result);  
 }
-update_file();
+
+const updateDB = async () => {
+    const productmodel = new mongoose.model('products',productSch);
+    let updata = await productmodel.updateOne (
+        {brand:"Nokia"},
+        {
+            $set:{price:999}
+        }
+    );
+    console.log(updata); 
+}
+
+const ReadDB = async() => {
+    const product = new mongoose.model('products',productSch);
+    const data = await product.find({});
+    console.log('Find-->',data);
+}
+
+const DeleteDB = async() =>{
+    const product = new mongoose.model('product',productSch);
+    let data = await product.deleteOne(
+        {brand:"Nokia"}
+    );
+    console.log('data',data);
+}
