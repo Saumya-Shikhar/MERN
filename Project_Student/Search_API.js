@@ -5,15 +5,16 @@ const schema_product = require('./index');
 const app = express();
 app.use(express.json());
 
-app.get('/search/:key', async(req,res) => {
+app.delete('/search/:key', async(req,res) => {
     let data = await schema_product.find(
         {
             "$or":[
-                {'name':{$regex:req.params.key}}
+                {"Name":{$regex:req.params.key}},
+                {"Email":{$regex:req.params.key}}
             ]
         }
     );
-    console.log(req.params.key);
+    console.log(data);
     res.send(data);
 });
 
