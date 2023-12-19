@@ -52,12 +52,15 @@ app.delete('/delete/:Name', async(req,res) => {
 app.get('/search/:key', async(req,res) => {
     const data = await import_product.find({
         "$or":[
+            { "Class": { $eq: parseInt(req.params.key) } },
+            {"ContactNumber":{$eq:parseInt(req.params.key)}},
             {"Name":{$regex:req.params.key}},
-            {"Class":{$regex:req.params.key}}
+            {"Email":{$regex:req.params.key}},
+            {"Gender":{$regex:req.params.key}}
         ]
     });
-    // console.log(req.params.key);
-    res.send(data+"---"+req.params.key);
+    console.log(req.params.key);
+    res.send(data);
 });
 
 app.listen(2000);
