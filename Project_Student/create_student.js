@@ -11,56 +11,37 @@ app.post('/signin', async (req,res)=> {
     res.send("Registration Successfull "+JSON.stringify(req.body));
 });
  
-app.get('/signin', async(req,res) => {
+app.post('/signup', async(req,res) => {
     let email_db = await import_product.find({Email:req.body.Email});
-    let class_db = await import_product.find({Class:req.body.Class});
-    // console.log(email_db+" ---- "+class_db,"-------Value Initial"); 
-    if(email_db && class_db){
-        console.log(email_db+" ---- "+class_db);
-        res.send("Welcome "+`${req.body.Name}`);
+    let name_db = await import_product.find({Name:req.body.Name});
+    // let class_db = await import_product.find({Class:req.body.Class});
+
+    if(email_db.length > 0 && name_db.length > 0){
+        res.send("Welcome "+ req.body.Name);
     }
     else{
-        console.log(email_db+" ---- "+class_db);
-        res.send("Access Denied");
+        res.send("Invalid Credentials");
     }
-    // res.send(email_pm);
 });
-
-// app.post('/register', async (req,res)=> {
-//     const data = new import_product(req.body);
-//     const data_save = await data.save();
-//     console.log(data_save);
-//     res.send("Successfully registered--> "+data_save);
-// });
 
 app.get('/read', async (req,res) => {
     const data = await import_product.find();
     res.send(data);
 });
 
-app.put('/update_url/:_id', async(req,res) => {
+app.put('/update/:Name', async(req,res) => {
     const data = await import_product.updateOne(
         req.params, // using Using Handle
         {
             $set:req.body
         }
     );
-    console.log("Updation Successfull using URL ",data.acknowledged);
+    console.log(req.body);
+    console.log("Updation Successfull ",data);
     res.send(data);
 });
 
-// app.put('/update', async (req,res) => {
-//     const data = await import_product.updateOne(
-//         req.body.Name,
-//         {
-//             $set:req.body
-//         }
-//     );
-//     console.log("Update Sucessfull using Body");
-//     res.send(data);
-// });
-
-app.delete('/delete/:_id', async(req,res) => {
+app.delete('/delete/:Name', async(req,res) => {
     const data = await import_product.deleteOne(
         req.params
     );
