@@ -4,14 +4,14 @@ const import_product = require('./Schema_file');
 const app = express();
 app.use(express.json());
 
-app.post('/signin', async (req,res)=> {
+app.post('/signup', async (req,res)=> {
     let data = new import_product(req.body);
     let data_save = await data.save();
     console.log(data_save);
     res.send("Registration Successfull "+JSON.stringify(req.body));
 });
  
-app.post('/signup', async(req,res) => {
+app.post('/signin', async(req,res) => {
     let email_db = await import_product.find({Email:req.body.Email});
     let name_db = await import_product.find({Name:req.body.Name});
     // let class_db = await import_product.find({Class:req.body.Class});
@@ -49,4 +49,15 @@ app.delete('/delete/:Name', async(req,res) => {
     res.send(data);
 });
  
+app.get('/search/:key', async(req,res) => {
+    const data = await import_product.find({
+        "$or":[
+            {"Name":{$regex:req.params.key}},
+            {"Class":{$regex:req.params.key}}
+        ]
+    });
+    // console.log(req.params.key);
+    res.send(data+"---"+req.params.key);
+});
+
 app.listen(2000);
