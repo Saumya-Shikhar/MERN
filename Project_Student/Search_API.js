@@ -9,6 +9,7 @@ app.get('/search/:key', async(req,res) => {
     let data = await schema_product.find(
         {
             "$or":[
+                // {"ContactNumber":{$eq:parseInt(req.params.key)}}, // For Type Number
                 {"Name":{$regex:req.params.key}},
                 {"Email":{$regex:req.params.key}}
             ]
